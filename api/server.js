@@ -46,7 +46,7 @@ server.post('/login', (req, res) => {
     const userInput = req.body;
     findByUsername(userInput.username)
     .then(user => {
-        if(user && bcrypt.compareSync(userInput.password, user[0])){
+        if(user && bcrypt.compareSync(userInput.password, user[0].password)){
             const token = generateToken(user);
             res.status(200).json({ message: 'welcome', token });
         } else{
