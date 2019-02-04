@@ -100,6 +100,7 @@ server.get('/users', lock, (req, res) => {
 
 //Stories API
 
+//Get All Stories available to all logged in users
 server.get('/stories', lock, (req, res) => {
     getStories()
     .then(s => {
@@ -113,6 +114,7 @@ server.get('/stories', lock, (req, res) => {
     })
 })
 
+//Post Story with title and text fields available to all logged in users
 server.post('/stories', lock, (req, res) => {
     const story = req.body
     create(story)
@@ -120,6 +122,32 @@ server.post('/stories', lock, (req, res) => {
         res.status(200).json({ id: u[0]})
     })
     .catch(err => res.status(500).json(err))
+})
+
+//Update Story should be only available to that user 
+//and admin
+server.put('/stories/:id', lock, (req, res) => {
+    const id = req.params.id
+    const story = req.body
+
+    update(story, id)
+    .then(s => {
+        res.status(200).json({
+            message: 'Your story has been updated'
+        })
+    })
+    .catch(err => res.status(500).json(err))
+})
+
+server.delete('/stories/:id', lock, (req, res) => {
+    const id = req.params.id
+    remove(id)
+    .then(s => {
+        res.status(200).json({
+            message: 'Your story has successfully been deleted'
+        })
+    })
+
 })
 
 module.exports = server

@@ -33,12 +33,12 @@ module.exports = {
     },
 
     //update
-    update: (story, id, changes) => {
-        return db('stories').where('id', id).update(changes)
+    update: (story, id) => {
+        return db('stories').where('id', id).update(story)
     },
 
     //delete
-    remove: (story, id) => {
+    remove: (id) => {
         return db('stories').where('id', id).del()
     }
 }
