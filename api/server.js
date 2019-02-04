@@ -32,10 +32,11 @@ server.post('/register', (req, res) => {
 })
 
 //Generates Token for Each Accepted Login
+//role permissions must be optimized later
 function generateToken(user) {
     const payload = {
         username: user.username,
-        roles: ['admin', 'accountant']
+        role: ['admin']
     };
 
     const secret = process.env.JWT_SECRET;
@@ -84,9 +85,20 @@ function lock(req, res, next) {
     }
 }
 
-//Permitted user can see all users 
+//function to check user's role
+function checkRole(role) {
+    //middleware to check role
+    return function(req, res, next) {
+        if(req.decodedToken.role.includes(role)) {
+            next();
+        } else {
+            res.status(403).json({ message: `Must have ${role} personnel access` })
+        }
+    }
+}
 
-server.get('/users', lock, (req, res) => {
+//Permitted user can see all users 
+server.get('/users', lock, checkRole('admin'), (req, res) => {
     getUsers()
     .then(u => {
         res.status(200).json({

@@ -10,6 +10,8 @@ exports.up = function(knex, Promise) {
       tbl
         .string('password', 128)
         .notNullable();
+      tbl
+        .string('role', 20)
   })
 };
 

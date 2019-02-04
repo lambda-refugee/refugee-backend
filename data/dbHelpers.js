@@ -22,22 +22,22 @@ module.exports = {
 
     db,
 
-    //add
+    //add story
     create: (story) => {
         return db('stories').insert(story)
     },
 
-    //read
+    //read all stories
     getStories: (story) => {
         return db('stories')
     },
 
-    //update
+    //update story
     update: (story, id) => {
         return db('stories').where('id', id).update(story)
     },
 
-    //delete
+    //delete story
     remove: (id) => {
         return db('stories').where('id', id).del()
     }
