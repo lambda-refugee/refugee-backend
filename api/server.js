@@ -18,9 +18,9 @@ server.get('/', (req, res) => {
     res.send('api working')
 })
 
-//Endpoint to register to User Table 
 server.post('/register', (req, res) => {
     const user = req.body;
+    //Hashing password input
     const hash = bcrypt.hashSync(user.password)
     user.password = hash;
     insert(user)
@@ -33,7 +33,7 @@ server.post('/register', (req, res) => {
 function generateToken(user) {
     const payload = {
         username: user.username,
-        roles: ['admin', 'accountant'] 
+        roles: ['admin', 'accountant']
     };
 
     const secret = process.env.JWT_SECRET;
@@ -53,8 +53,8 @@ server.post('/login', (req, res) => {
         if(user && bcrypt.compareSync(userInput.password, user[0].password)){
             const token = generateToken(user);
             res.status(200).json({ message: 'welcome', token });
-        } else {
-            res.status(404).json({err: 'invalid username or password'})
+        } else{
+            res.status(404).json({ err: 'invalid username or password' })
         }
     })
     .catch(err => {
