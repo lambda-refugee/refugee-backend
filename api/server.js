@@ -18,6 +18,7 @@ server.get('/', (req, res) => {
     res.send('api working')
 })
 
+//Users Table Register with username and password
 server.post('/register', (req, res) => {
     const user = req.body;
     //Hashing password input
@@ -30,6 +31,7 @@ server.post('/register', (req, res) => {
     .catch(err => res.status(500).json(err))
 })
 
+//Generates Token for Each Accepted Login
 function generateToken(user) {
     const payload = {
         username: user.username,
@@ -44,6 +46,8 @@ function generateToken(user) {
 
     return jwt.sign(payload, secret, options);
 }
+
+//Users Table Login with Username and Password
 
 server.post('/login', (req, res) => {
     //checks that username exists and password matches
@@ -62,6 +66,7 @@ server.post('/login', (req, res) => {
     })
 });
 
+//Decodes the Login Token and permits access to web content
 function lock(req, res, next) {
     const token = req.headers.authorization;
 
@@ -78,6 +83,8 @@ function lock(req, res, next) {
         res.status(401).json({ message: 'no token provided' });
     }
 }
+
+//Permitted user can see all users 
 
 server.get('/users', lock, (req, res) => {
     getUsers()
