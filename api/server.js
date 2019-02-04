@@ -9,7 +9,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const server = express();
 
-const { create, getStories, update, remove, db, insert, findByUsername, getUsers }= require('../data/dbHelpers.js');
+const { 
+    create, 
+    getStories, 
+    update, 
+    removeStory, 
+    db, 
+    insert, 
+    findByUsername, 
+    getUsers, 
+    removeUser 
+}= require('../data/dbHelpers.js');
 
 server.use(express.json());
 server.use(cors());
@@ -110,6 +120,19 @@ server.get('/users', lock, checkRole('admin'), (req, res) => {
     })
 });
 
+//Delete User Function 
+//Refactor to include a dynamic username input 
+server.delete('/users/:id', lock, checkRole('admin'), (req, res) => {
+    const id = req.params.id
+    removeUser(id)
+    .then(u => {
+        res.status(200).json({
+            message: `${id} has successfully been deleted`
+        })
+    })
+
+})
+
 //Stories API
 
 //Get All Stories available to all logged in users
@@ -153,7 +176,7 @@ server.put('/stories/:id', lock, (req, res) => {
 
 server.delete('/stories/:id', lock, (req, res) => {
     const id = req.params.id
-    remove(id)
+    removeStory(id)
     .then(s => {
         res.status(200).json({
             message: 'Your story has successfully been deleted'

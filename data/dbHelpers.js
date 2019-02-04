@@ -20,6 +20,10 @@ module.exports = {
         return db('users')
     },
 
+    removeUser: (id) => {
+        return db('users').where('id', id).del()
+    },
+
     db,
 
     //add story
@@ -38,7 +42,7 @@ module.exports = {
     },
 
     //delete story
-    remove: (id) => {
+    removeStory: (id) => {
         return db('stories').where('id', id).del()
     }
 }
