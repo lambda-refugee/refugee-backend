@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const server = express();
 
-const { db, insert, findByUsername, getUsers }= require('../data/dbHelpers.js');
+const { create, getStories, update, remove, db, insert, findByUsername, getUsers }= require('../data/dbHelpers.js');
 
 server.use(express.json());
 server.use(cors());
@@ -97,5 +97,29 @@ server.get('/users', lock, (req, res) => {
         res.status(500).json(err)
     })
 });
+
+//Stories API
+
+server.get('/stories', lock, (req, res) => {
+    getStories()
+    .then(s => {
+        res.status(200).json({
+            s, 
+            decodedToken: req.decodedToken
+        })
+    })
+    .catch(err => {
+        res.status(500).json(err)
+    })
+})
+
+server.post('/stories', lock, (req, res) => {
+    const story = req.body
+    create(story)
+    .then(u => {
+        res.status(200).json({ id: u[0]})
+    })
+    .catch(err => res.status(500).json(err))
+})
 
 module.exports = server
