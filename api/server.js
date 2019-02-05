@@ -153,7 +153,7 @@ server.get('/stories', (req, res) => {
 //Post Story with title and text fields available to all logged in users
 //This should post to "storiesPending" table to await admin acceptance
 //If accepted, get "storiesPending/:id", post to "stories" table
-server.post('/stories', lock, (req, res) => {
+server.post('/stories', (req, res) => {
     const story = req.body
     create(story)
     .then(u => {
@@ -163,7 +163,7 @@ server.post('/stories', lock, (req, res) => {
 })
 
 //Update Story permission - admin and user:id (maybe a checkId function)
-server.put('/stories/:id', lock, (req, res) => {
+server.put('/stories/:id', (req, res) => {
     const id = req.params.id
     const story = req.body
 
@@ -178,7 +178,7 @@ server.put('/stories/:id', lock, (req, res) => {
 
 //Delete Story function
 //Refactor to include a dynamic title in the message
-server.delete('/stories/:id', lock, (req, res) => {
+server.delete('/stories/:id', (req, res) => {
     const id = req.params.id
     removeStory(id)
     .then(s => {
