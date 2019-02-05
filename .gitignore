@@ -73,3 +73,5 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+node_modules
+npm-debug.log
