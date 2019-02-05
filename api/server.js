@@ -28,7 +28,7 @@ server.get('/', (req, res) => {
     res.send('api working')
 })
 
-//Users Table Register with username and password
+//Users Table All users can Register with username and password
 server.post('/register', (req, res) => {
     const user = req.body;
     //Hashing password input
@@ -120,7 +120,7 @@ server.get('/users', lock, checkRole('admin'), (req, res) => {
     })
 });
 
-//Delete User Function 
+//Delete User Function - Admin access
 //Refactor to include a dynamic username input 
 server.delete('/users/:id', lock, checkRole('admin'), (req, res) => {
     const id = req.params.id
@@ -135,8 +135,9 @@ server.delete('/users/:id', lock, checkRole('admin'), (req, res) => {
 
 //Stories API
 
-//Get All Stories available to all logged in users
-server.get('/stories', lock, (req, res) => {
+//Get All Stories available to all logged in users, 
+//available to all users and non-users
+server.get('/stories', (req, res) => {
     getStories()
     .then(s => {
         res.status(200).json({
@@ -150,6 +151,8 @@ server.get('/stories', lock, (req, res) => {
 })
 
 //Post Story with title and text fields available to all logged in users
+//This should post to "storiesPending" table to await admin acceptance
+//If accepted, get "storiesPending/:id", post to "stories" table
 server.post('/stories', lock, (req, res) => {
     const story = req.body
     create(story)
@@ -159,8 +162,7 @@ server.post('/stories', lock, (req, res) => {
     .catch(err => res.status(500).json(err))
 })
 
-//Update Story should be only available to that user 
-//and admin
+//Update Story permission - admin and user:id (maybe a checkId function)
 server.put('/stories/:id', lock, (req, res) => {
     const id = req.params.id
     const story = req.body
@@ -174,6 +176,8 @@ server.put('/stories/:id', lock, (req, res) => {
     .catch(err => res.status(500).json(err))
 })
 
+//Delete Story function
+//Refactor to include a dynamic title in the message
 server.delete('/stories/:id', lock, (req, res) => {
     const id = req.params.id
     removeStory(id)
