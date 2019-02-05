@@ -10,6 +10,8 @@ exports.up = function(knex, Promise) {
         tbl
           .text('text')
           .notNullable();
+        tbl
+        .boolean('approved')
     })
 };
 
