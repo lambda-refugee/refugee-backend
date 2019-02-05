@@ -150,9 +150,8 @@ server.get('/stories', (req, res) => {
     })
 })
 
-//Post Story with title and text fields available to all logged in users
-//This should post to "storiesPending" table to await admin acceptance
-//If accepted, get "storiesPending/:id", post to "stories" table
+//Post Story with title and text fields
+
 server.post('/stories', (req, res) => {
     const story = req.body
     create(story)
@@ -162,7 +161,7 @@ server.post('/stories', (req, res) => {
     .catch(err => res.status(500).json(err))
 })
 
-//Update Story permission - admin and user:id (maybe a checkId function)
+//Update Story permission
 server.put('/stories/:id', (req, res) => {
     const id = req.params.id
     const story = req.body
