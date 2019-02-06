@@ -49,18 +49,18 @@ describe('API users', () => {
         }) 
     })
 
-    describe('POST /users', function() {
-        it('responds with json', function(done) {
-          request(server)
-            .post('/users')
-            .send({username: 'DSS', password: '123456'})
-            .set('Accept', 'application/json')
-            .expect(200)
-            .end(function(err, res) {
-              if (err) return done(err);
-              done();
-            });
-        });
-      });
+    // describe('POST /users', function() {
+    //     it('responds with json', function(done) {
+    //       request(server)
+    //         .post('/users')
+    //         .send({username: 'DSS', password: '123456'})
+    //         .set('Accept', 'application/json')
+    //         .expect(200)
+    //         .end(function(err, res) {
+    //           if (err) return done(err);
+    //           done();
+    //         });
+    //     });
+    //   });
 
 })
