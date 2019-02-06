@@ -4,7 +4,7 @@
   "description": "A build week project for Lambda School",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watchAll --verbose",
     "start": "node index.js"
   },
   "repository": {
