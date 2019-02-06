@@ -135,7 +135,7 @@ server.delete('/users/:id', lock, checkRole('admin'), (req, res) => {
 
 //Stories API
 
-//Get All Stories available to all logged in users, 
+//Get All Stories 
 //available to all users and non-users
 server.get('/stories', (req, res) => {
     getStories()
