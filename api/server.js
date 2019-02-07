@@ -28,6 +28,8 @@ server.get('/', (req, res) => {
     res.send('api working')
 })
 
+console.log('say something')
+
 //Users Table All users can Register with username and password
 server.post('/register', (req, res) => {
     const user = req.body;
@@ -69,7 +71,9 @@ server.post('/login', (req, res) => {
             const token = generateToken(user);
             res.status(200).json({ message: 'welcome', token });
         } else{
-            res.status(404).json({ err: 'invalid username or password' })
+            console.log('something')
+            console.log(userInput.password);
+            res.status(404).json({ err: 'invalid username or password' });
         }
     })
     .catch(err => {

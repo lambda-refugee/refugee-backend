@@ -11,6 +11,8 @@ exports.up = function(knex, Promise) {
           .notNullable();
         tbl
         .boolean('approved')
+        tbl
+        .string('country')
     })
 };
 
