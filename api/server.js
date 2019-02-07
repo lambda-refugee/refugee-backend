@@ -67,12 +67,12 @@ server.post('/login', (req, res) => {
     const userInput = req.body;
     findByUsername(userInput.username)
     .then(user => {
-        if(user && bcrypt.compareSync(userInput.password, user[0].password || userInput.password === '123456')){
+        if(user && bcrypt.compareSync(userInput.password, user[0].password)){
             const token = generateToken(user);
+
             res.status(200).json({ message: 'welcome', token });
         } else{
-            console.log('something')
-            console.log(userInput.password);
+
             res.status(404).json({ err: 'invalid username or password' });
         }
     })
@@ -100,19 +100,19 @@ function lock(req, res, next) {
 }
 
 //function to check user's role
-function checkRole(role) {
-    //middleware to check role
-    return function(req, res, next) {
-        if(req.decodedToken.role.includes(role)) {
-            next();
-        } else {
-            res.status(403).json({ message: `Must have ${role} personnel access` })
-        }
-    }
-}
+// function checkRole(role) {
+//     //middleware to check role
+//     return function(req, res, next) {
+//         if(req.decodedToken.role.includes(role)) {
+//             next();
+//         } else {
+//             res.status(403).json({ message: `Must have ${role} personnel access` })
+//         }
+//     }
+// }
 
 //Permitted user can see all users 
-server.get('/users', lock, checkRole('admin'), (req, res) => {
+server.get('/users', lock, (req, res) => {
     getUsers()
     .then(u => {
         res.status(200).json({
@@ -126,7 +126,7 @@ server.get('/users', lock, checkRole('admin'), (req, res) => {
 
 //Delete User Function - Admin access
 //Refactor to include a dynamic username input 
-server.delete('/users/:id', lock, checkRole('admin'), (req, res) => {
+server.delete('/users/:id', lock, (req, res) => {
     const id = req.params.id
     removeUser(id)
     .then(u => {
