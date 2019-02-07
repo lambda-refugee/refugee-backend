@@ -15,7 +15,7 @@ beforeAll((done) => {
             token = response.body.token;
             done();
         })
-})
+});
 
 describe('API users', () => {
 
@@ -25,7 +25,7 @@ describe('API users', () => {
             expect(response.status).toBe(401)
         })
 
-        test('should respond with 200 and JSON object when token is passed', () => {
+        test('should respond with 200 and JSON object', () => {
             return request(server)
                 .get('/users')
                 .set('Authorization', `${token}`)
