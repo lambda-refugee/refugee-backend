@@ -67,13 +67,20 @@ server.post('/login', (req, res) => {
     const userInput = req.body;
     findByUsername(userInput.username)
     .then(user => {
-        if(user && bcrypt.compareSync(userInput.password, user[0].password)){
+        if(!userInput.username || !userInput.password){
+            console.log('sadface')
+            console.log(user)
+            res.status(401).json({ err: 'Please fill in both required fields' });
+            
+        } else if (user && bcrypt.compareSync(userInput.password, user[0].password)){
+            console.log('iffing')
+            console.log(user)
             const token = generateToken(user);
 
             res.status(200).json({ message: 'welcome', token });
-        } else{
-
-            res.status(404).json({ err: 'invalid username or password' });
+        } else {
+            console.log('van Elsing')
+            res.status(404).json({ err: 'Incorrect Username or Password'})
         }
     })
     .catch(err => {
