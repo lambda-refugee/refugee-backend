@@ -17,7 +17,7 @@ beforeAll((done) => {
         })
 });
 
-describe('API users', () => {
+describe('GET users API and stories API', () => {
 
     describe('Using Authorization to GET /users from Users Table', () => {
         it('should return 401 when no auth is passed', async () => {
@@ -45,22 +45,47 @@ describe('API users', () => {
                     expect(response.statusCode).toBe(200);
                     expect(response.type).toBe('application/json')
                 })
-           
         }) 
     })
 
-    // describe('POST /users', function() {
-    //     it('responds with json', function(done) {
-    //       request(server)
-    //         .post('/users')
-    //         .send({username: 'DSS', password: '123456'})
-    //         .set('Accept', 'application/json')
-    //         .expect(200)
-    //         .end(function(err, res) {
-    //           if (err) return done(err);
-    //           done();
-    //         });
-    //     });
-    //   });
+    describe('POST /login', () => {
+        let data = {
+            "username": "dummy1",
+            "password": "dummy"
+        }
+        test('should respond with 200 and JSON object', () => {
+            return request(server)
+                .post('/login')
+                .send(data)
+                .set('Accept', `application/json`)
+                .then((response) => {
+                    expect(response.statusCode).toBe(200);
+                    expect(response.type).toBe('application/json')
+                })
+        })
+
+        //Error Status Codes
+        it('should return 401 if a field is missing', async () => {
+            let response = await request(server)
+                .post('/login')
+                .send({ username: 'dummy1' })
+
+                expect(response.status).toBe(401);
+
+                reponse = await request(server)
+                .post('/login')
+                .send({ password: 'dummy' })
+
+                expect(response.status).toBe(401)
+        })
+
+        it('should return 401 if either/both of the fields are incorrect', async() => {
+            let response = await request(server)
+                .post('/login')
+                .send({ username: 'wrongUN', password: 'wrongPW' })
+
+                expect(response.status).toBe(401)
+        })
+      });
 
 })
